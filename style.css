@@ -1,0 +1,197 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body Styles */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header Section */
+.header {
+    background-color: #003366;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+}
+
+.logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo {
+    max-width: 100px;
+    height: auto;
+}
+
+/* Main Content */
+.content {
+    padding: 20px;
+    text-align: center;
+}
+
+.content p {
+    margin-bottom: 15px;
+}
+
+.table-container {
+    margin: 20px auto;
+    width: 100%;
+    overflow-x: auto; /* Ensures table scrolls on smaller screens */
+    padding: 0 10px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    table-layout: auto; /* Auto-resizes columns based on content */
+}
+
+table th, table td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+    word-wrap: break-word; /* Prevents long words from breaking layout */
+}
+
+table th {
+    background-color: #003366;
+    color: white;
+}
+
+table tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+table tbody tr:nth-child(even) {
+    background-color: #ffffff;
+}
+
+#pattern-link {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+#pattern-link:hover {
+    text-decoration: underline;
+}
+
+/* Terminal Container */
+#terminal-container {
+    border: 1px solid #333;
+    font-family: monospace;
+    font-size: 14px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+	text-align: left;
+	padding: 10px; 
+}
+
+.terminal-line {
+    margin-bottom: 5px;
+    display: flex;
+    align-items: left;
+	text-align:left;
+}
+
+.terminal-input {
+    flex-grow: 1;
+    font-family: monospace;
+    font-size: 14px;
+    outline: none;
+    padding: 5px;
+}
+
+/* Footer Section */
+.footer {
+    background-color: #003366;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    margin-top: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .header {
+        font-size: 18px;
+        padding: 10px;
+    }
+
+    .logo {
+        max-width: 80px;
+    }
+
+    .content {
+        padding: 15px;
+    }
+
+    .table-container {
+        width: 100%;
+    }
+
+    table th, table td {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    #terminal-container {
+        font-size: 12px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .content {
+        padding: 30px 50px;
+    }
+
+    table th, table td {
+        font-size: 16px;
+    }
+
+    #terminal-container {
+        font-size: 16px;
+        padding: 15px;
+    }
+
+    /* Add padding for table container */
+    .table-container {
+        padding: 0 20px;
+    }
+
+    table {
+        table-layout: auto; /* Fixes column width and prevents overflow */
+    }
+
+    table th, table td {
+        word-wrap: break-word; /* Ensures the content fits in columns */
+    }
+}
+
+/* High Resolution Screens (200% zoom and higher) */
+@media screen and (min-width: 1600px) {
+    .table-container {
+        padding: 0 30px;
+        max-width: 100%; /* Ensures no unwanted stretching */
+    }
+
+    table {
+        table-layout: fixed; /* Maintain consistent column width */
+    }
+
+    table th, table td {
+        padding: 12px;
+    }
+}

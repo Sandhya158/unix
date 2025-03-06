@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GSSS Institute of Engineering</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="logo-container">
+            <img src="college.jpg" alt="College Logo" class="logo">
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="content">
+        <p><b>Topic</b></p>
+        <p> Pattern Matching with dot </p>
+        <p>This will list all hidden filenames in the directory having a specific number of characters after the dot</p>
+        <div class="table-container">
+            <table border=1>
+                <thead>
+                    <tr>
+                        <th>Command</th>
+                        <th>Explanation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>ls .???*</td>
+                        <td>Lists all files and directories in the current directory with at least three characters after dot</td>
+                    </tr>
+                    <tr>
+                        <td>ls emp*lst</td>
+                        <td>List all the files beginning with emp and having dot in between</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p>The character class</p>
+        <p>The character class comprises a set of characters enclosed by the rectangular brackets, [ and ], but it matches a single character in the class.</p>
+        <div class="table-container">
+            <table border=1>
+                <thead>
+                    <tr>
+                        <th>Command</th>
+                        <th>Explanation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>[abc]</td>
+                        <td>Matches any one character listed inside the brackets (e.g., a, b, or c).</td>
+                    </tr>
+                    <tr>
+                        <td>[!abc]</td>
+                        <td>Matches any character not listed inside the brackets.</td>
+                    </tr>
+                    <tr>
+                        <td>[a-z]</td>
+                        <td>Matches any lowercase letter in the specified range (a to z).</td>
+                    </tr>
+                    <tr>
+                        <td>[A-Z]</td>
+                        <td>Matches any uppercase letter in the specified range (A to Z).</td>
+                    </tr>
+                    <tr>
+                        <td>[0-9]</td>
+                        <td>Matches any digit (same as \d in many tools).</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p><a href="#" id="pattern-link">Open Terminal</a></p>
+        <div id="terminal-container" style="display:none; margin-top: 20px; background: black; color: white; padding: 10px; height: 300px; overflow-y: scroll;">
+            <div id="terminal-output" class="terminal-output">
+                Welcome to the Unix terminal simulation!<br>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <p>&copy; 2024 GSSS Institute of Engineering. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const terminalContainer = document.getElementById("terminal-container");
+        const terminalOutput = document.getElementById("terminal-output");
+        const patternLink = document.getElementById("pattern-link");
+
+        let currentInput = null; // Reference to the current input element
+
+        // Show the terminal container
+        patternLink.addEventListener("click", (event) => {
+            event.preventDefault();
+            terminalContainer.style.display = "block"; // Display the terminal container
+            terminalOutput.innerHTML = ""; // Clear any previous commands
+            appendNewPrompt(); // Start fresh with a new prompt
+        });
+
+        // Append a new command prompt
+        function appendNewPrompt() {
+            const terminalLine = document.createElement("div");
+            terminalLine.classList.add("terminal-line");
+
+            // Add the `$` prompt
+            const prompt = document.createElement("span");
+            prompt.textContent = "$ ";
+            terminalLine.appendChild(prompt);
+
+            // Add the input field
+            const input = document.createElement("input");
+            input.type = "text";
+            input.classList.add("terminal-input");
+            input.style.background = "black";
+            input.style.color = "white";
+            input.style.border = "none";
+            input.addEventListener("keydown", handleCommand);
+            terminalLine.appendChild(input);
+
+            terminalOutput.appendChild(terminalLine);
+            terminalOutput.scrollTop = terminalOutput.scrollHeight; // Auto-scroll
+            input.focus();
+
+            currentInput = input; // Update the current input reference
+        }
+
+        // Handle the command input
+        function handleCommand(e) {
+            if (e.key === "Enter") {
+                const command = currentInput.value.trim(); // Get the entered command
+                if (!command) return; // Ignore empty commands
+
+                currentInput.disabled = true; // Disable the current input
+                currentInput = null; // Reset current input
+
+                // AJAX call to process the command
+                fetch("commands.php", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ command: command }),
+                })
+                    .then((response) => response.text())
+                    .then((data) => {
+                        // Append the server response directly
+                        if (data.trim() === "CLEAR_SCREEN") {
+                            terminalOutput.innerHTML = ''; // Clear terminal output on 'clear'
+                        } else {
+                            const responseLine = document.createElement("div");
+                            responseLine.textContent = data;
+                            terminalOutput.appendChild(responseLine);
+                        }
+
+                        terminalOutput.scrollTop = terminalOutput.scrollHeight; // Auto-scroll
+                        appendNewPrompt(); // Add a new prompt
+                    })
+                    .catch((error) => {
+                        // Append an error message
+                        const errorLine = document.createElement("div");
+                        errorLine.textContent = `Error: ${error.message}`;
+                        errorLine.style.color = "red";
+                        terminalOutput.appendChild(errorLine);
+
+                        terminalOutput.scrollTop = terminalOutput.scrollHeight; // Auto-scroll
+                        appendNewPrompt(); // Add a new prompt
+                    });
+            }
+        }
+    </script>
+</body>
+</html>
